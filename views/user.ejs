@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile | SamCore DevVault</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-b from-slate-50 via-white to-slate-100 min-h-screen p-8">
+
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Top Profile Card -->
+    <div class="bg-white border border-slate-200 rounded-3xl shadow-xl p-8 mb-10 flex flex-col md:flex-row justify-between items-center gap-8">
+
+      <div class="flex items-center gap-6">
+
+        <img
+          src="<%= user.profilePic || 'https://i.pravatar.cc/150' %>"
+          class="w-28 h-28 rounded-full object-cover border-4 border-indigo-500 shadow-md"
+        />
+
+        <div>
+          <h1 class="text-3xl font-bold text-slate-900"><%= user.name %></h1>
+          <p class="text-slate-500 mt-1"><%= user.email %></p>
+          <p class="text-indigo-600 font-medium mt-2 capitalize"><%= user.role %></p>
+        </div>
+
+      </div>
+
+      <a
+        href="/edit/<%= user._id %>"
+        class="px-6 py-3 bg-indigo-600 text-white rounded-2xl font-semibold hover:bg-indigo-700 shadow-md transition"
+      >
+        Edit Profile
+      </a>
+
+    </div>
+
+    <!-- Stats + Details -->
+    <div class="grid md:grid-cols-2 gap-8 mb-10">
+
+      <!-- Details -->
+      <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8">
+        <h2 class="text-2xl font-bold text-slate-900 mb-6">
+          Profile Details
+        </h2>
+
+        <div class="space-y-4 text-slate-600">
+
+          <p><span class="font-semibold text-slate-800">Bio:</span> <%= user.bio %></p>
+
+          <p><span class="font-semibold text-slate-800">City:</span> <%= user.city %></p>
+
+          <p><span class="font-semibold text-slate-800">Tech Stack:</span> <%= user.stack %></p>
+
+          <p><span class="font-semibold text-slate-800">Education:</span> <%= user.eductaion %></p>
+
+          <p><span class="font-semibold text-slate-800">Last Updated:</span> <%= user.updatedAt %></p>
+
+          <p><span class="font-semibold text-slate-800">Created:</span> <%= user.createdAt %></p>
+
+        </div>
+      </div>
+
+      <!-- Languages -->
+      <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8">
+
+        <h2 class="text-2xl font-bold text-slate-900 mb-6">
+          Languages & Skills
+        </h2>
+
+        <div class="flex flex-wrap gap-3">
+
+          <% user.languages.forEach(lang => { %>
+            <span class="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-full font-medium border border-indigo-100">
+              <%= lang %>
+            </span>
+          <% }) %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Projects -->
+    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8 mb-10">
+
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">
+        Projects
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-5">
+
+        <% user.projects.forEach(project => { %>
+          <div class="bg-slate-50 border rounded-2xl p-5 hover:shadow-md transition">
+            <p class="text-slate-700 font-medium"><%= project %></p>
+          </div>
+        <% }) %>
+
+      </div>
+
+    </div>
+
+    <!-- Audit Logs -->
+    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8">
+
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">
+        Recent Activity
+      </h2>
+
+      <div class="space-y-4">
+
+        <% audits.forEach(audit => { %>
+          <div class="bg-slate-50 border rounded-2xl p-4 flex justify-between items-center">
+            <div>
+              <p class="text-slate-800 font-medium"><%= audit.action %></p>
+            </div>
+            <p class="text-sm text-slate-500"><%= audit.createdAt %></p>
+          </div>
+        <% }) %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
