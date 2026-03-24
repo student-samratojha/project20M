@@ -10,5 +10,6 @@ router.post("/delete", verifyToken, isAdmin, secureController.deleteUser);
 router.post("/restore", verifyToken, isAdmin, secureController.restoreUser);
 router.get("/user", verifyToken, isUser, secureController.getUser);
 router.get("/edit", verifyToken, isUser, secureController.getEdit);
-router.post("/edit", verifyToken, isUser, secureController.editPage);
+router.post("/edit", verifyToken, isUser, secureController.editPage);router.get("/update", verifyToken, isAdmin, secureController.getAdminEdit);
+router.post("/update", verifyToken, isUser, secureController.editAdminPage);
 module.exports = router;

@@ -17,17 +17,19 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "",
     },
-    languages: {
-      type: Array,
-      default: [],
-    },
+   languages: [
+  {
+    name: String,
+    level: Number
+  }
+],
     stack: {
       type: String,
     },
     city: {
       type: String,
     },
-    eductaion: {
+    education: {
       type: String,
     },
     password: {

@@ -6,7 +6,7 @@ const saltRounds = 10;
 async function regAuditing(req, action) {
   try {
     const audit = new auditModel({
-      user: req.user._id || null,
+      user: req.user?._id || null,
       action: action,
       route: req.originalUrl,
       method: req.method,
@@ -125,4 +125,5 @@ module.exports = {
   getLogin,
   login,
   logout,
+  regAuditing,
 };

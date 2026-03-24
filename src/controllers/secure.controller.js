@@ -1,6 +1,6 @@
 const auditModel = require("../db/models/audit.model");
 const userModel = require("../db/models/user.model");
-const regAuditing = require("./auth.controller");
+const { regAuditing } = require("./auth.controller");
 async function getAdmin(req, res) {
   try {
     const users = await userModel.find({ role: "user" });
@@ -103,7 +103,6 @@ async function editPage(req, res) {
     const {
       name,
       bio,
-      languages,
       stack,
       city,
       education,
@@ -115,12 +114,19 @@ async function editPage(req, res) {
       await regAuditing(req, "Edit Failed-User Not Found");
       return res.redirect(`/secure/user?Error`);
     }
+const names = [].concat(req.body.languageNames);
+const levels = [].concat(req.body.languageLevels);
+
+const languages = names.map((name, i) => ({
+  name,
+  level: Number(levels[i])
+}));
     user.name = name || user.name;
     user.city = city || user.city;
     user.projects = projects.split(",") || user.projects;
     user.profilePic = profilePic || user.profilePic;
     user.bio = bio || user.bio;
-    user.languages = languages.split(",") || user.language;
+    user.languages = languages || user.language;
     user.stack = stack || user.stack;
     user.education = education || user.education;
     await user.save();
@@ -132,11 +138,67 @@ async function editPage(req, res) {
   }
 }
 
+
+
+async function getAdminEdit(req, res) {
+  try {
+    res.render("editAdminPage", { user: req.user });
+  } catch (err) {
+    console.log(err);
+    res.redirect(`/secure/admin?Something_Went_Wrong`);
+  }
+}
+
+async function editAdminPage(req, res) {
+  try {
+    const {
+      name,
+      bio,
+      stack,
+      city,
+      education,
+      profilePic,
+      projects,
+    } = req.body;
+    const user = await userModel.findById(req.user._id);
+    if (!user) {
+      await regAuditing(req, "Edit Failed-User Not Found");
+      return res.redirect(`/secure/admin?Error`);
+    }
+const names = [].concat(req.body.languageNames);
+const levels = [].concat(req.body.languageLevels);
+
+const languages = names.map((name, i) => ({
+  name,
+  level: Number(levels[i])
+}));
+    user.name = name || user.name;
+    user.city = city || user.city;
+    user.projects = projects.split(",") || user.projects;
+    user.profilePic = profilePic || user.profilePic;
+    user.bio = bio || user.bio;
+    user.languages = languages || user.language;
+    user.stack = stack || user.stack;
+    user.education = education || user.education;
+    await user.save();
+    await regAuditing(req, "Edit Successfull");
+    res.redirect(`/secure/admin?Edit_Successfull`);
+  } catch (err) {
+    console.log(err);
+    res.redirect(`/secure/admin?Something_Went_Wrong`);
+  }
+}
+
+
+
+
+
 module.exports = {
   getAdmin,
   deleteUser,
   restoreUser,
   getUser,
   getEdit,
+  getAdminEdit,editAdminPage,
   editPage,
 };
